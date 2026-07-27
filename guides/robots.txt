@@ -1,0 +1,74 @@
+# robots.txt — hungrX (hungrx.com)
+# Updated: July 2026
+
+# ── Standard crawlers ─────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# ── Google ────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+# Google AI (Search Generative Experience + Gemini training)
+User-agent: Google-Extended
+Allow: /
+
+# ── OpenAI / ChatGPT ──────────────────────────────────────────────
+# Live browsing (ChatGPT real-time web access)
+User-agent: ChatGPT-User
+Allow: /
+
+# Training data crawl
+User-agent: GPTBot
+Allow: /
+
+# ── Anthropic / Claude ────────────────────────────────────────────
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ── Perplexity ────────────────────────────────────────────────────
+User-agent: PerplexityBot
+Allow: /
+
+# ── Apple ─────────────────────────────────────────────────────────
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ── Meta AI ───────────────────────────────────────────────────────
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# ── Microsoft / Bing / Copilot ────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+# ── Amazon ────────────────────────────────────────────────────────
+User-agent: Amazonbot
+Allow: /
+
+# ── Cohere ────────────────────────────────────────────────────────
+User-agent: cohere-ai
+Allow: /
+
+# ── Common Crawl (used to train most open LLMs) ───────────────────
+User-agent: CCBot
+Allow: /
+
+# ── ByteDance / TikTok ────────────────────────────────────────────
+User-agent: Bytespider
+Allow: /
+
+# ── Sitemap location ──────────────────────────────────────────────
+Sitemap: https://hungrx.com/sitemap.xml

@@ -51,7 +51,8 @@
     .step-detail{font-size:clamp(0.92rem,1.02vw,1.02rem);font-weight:400;color:rgba(0,0,0,0.52);line-height:1.5}
 
     /* BOTTOM BAR — tagline, CTA, energy stats all in same row */
-    .bottom-bar{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;align-items:center;padding:0.5rem 0 0.75rem;}
+    .bottom-bar{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0.5rem 0 0.75rem;}
+    .bottom-left{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
     .tagline{font-family:var(--font-head);font-weight:600;font-size:clamp(1.05rem,1.3vw,1.3rem);color:var(--faint);line-height:1.4}
     .cta-side{display:flex;flex-direction:column;gap:0.45rem}
     .btn{display:inline-flex;align-items:center;gap:0.55rem;padding:0.78rem 1.9rem;background:var(--green);border:2px solid var(--black);border-radius:9999px;font-family:var(--font-body);font-weight:700;font-size:0.98rem;color:var(--black);cursor:pointer;box-shadow:3px 3px 0 0 var(--black);transition:transform .15s,box-shadow .15s;width:fit-content}
@@ -64,8 +65,8 @@
     /* RIGHT — card fills row height */
     .right{grid-column:2;grid-row:1;display:flex;align-items:stretch;justify-content:center;height:100%;padding:0.75rem 0 0;overflow:hidden}
     .card{background:var(--white);border-radius:1.25rem;overflow:hidden;width:91%;height:100%}
-    .card img{width:100%;height:100%;object-fit:cover;display:block}
-    .card-body{padding:1.1rem 1.5rem 1.3rem}
+    .card img{width:100%;height:100%;object-fit:contain;display:block}
+    .card-body{width:91%;margin:0 auto;padding:1.1rem 1.5rem 1.3rem;box-sizing:border-box}
     .card-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem}
     .card-lbl{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--faint)}
     .card-val{font-size:1.3rem;font-weight:900}
@@ -105,7 +106,8 @@
       .step{flex-direction:row;align-items:baseline;gap:0.7rem}
       .step-label{min-width:4.5rem;font-size:1.05rem}
       .step-detail{font-size:0.92rem}
-      .bottom-bar{grid-column:1;grid-template-columns:1fr auto;gap:1rem;padding-top:1rem;padding-bottom:1rem;}
+      .bottom-bar{grid-column:1;grid-template-columns:1fr;padding:1rem 1.25rem;}
+      .bottom-left{gap:1rem}
       .bottom-bar .card-body{display:none}
       .tagline{font-size:1.02rem}
       .btn{font-size:0.92rem;padding:0.7rem 1.5rem}
@@ -208,12 +210,14 @@
     </div>
   </div>
   <div class="bottom-bar">
-    <p class="tagline">Eat what you love.<br>Stay on track.</p>
-    <div class="cta-side">
-      <button class="btn" onclick="openSheet()">
-        Continue
-        <span class="dot"><svg viewBox="0 0 10 10" fill="none" stroke="#BADA55" stroke-width="2.2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
-      </button>
+    <div class="bottom-left">
+      <p class="tagline">Eat what you love.<br>Stay on track.</p>
+      <div class="cta-side">
+        <button class="btn" onclick="openSheet()">
+          Continue
+          <span class="dot"><svg viewBox="0 0 10 10" fill="none" stroke="#BADA55" stroke-width="2.2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+        </button>
+      </div>
     </div>
     <div class="card-body">
       <div class="card-row">
