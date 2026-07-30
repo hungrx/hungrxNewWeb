@@ -6,6 +6,9 @@
   <title>hungrX — Eat What You Love. Stay On Track.</title>
   <meta name="description" content="Struggling to lose weight while eating out? hungrX finds nearby restaurants, shows real menu calories, and tracks your macros automatically. Free app."/>
   <link rel="canonical" href="https://hungrx.app/"/>
+  <link rel="icon" href="favicon.ico?v=2" sizes="any"/>
+  <link rel="icon" type="image/png" href="logo2.png?v=2"/>
+  <link rel="apple-touch-icon" href="logo2.png?v=2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
@@ -105,7 +108,7 @@
       .step{flex-direction:row;align-items:baseline;gap:0.7rem}
       .step-label{min-width:4.5rem;font-size:1.05rem}
       .step-detail{font-size:0.92rem}
-      .bottom-bar{grid-column:1;grid-template-columns:1fr auto;gap:1rem;padding-top:1rem;padding-bottom:1rem;}
+      .bottom-bar{grid-column:1;grid-template-columns:1fr auto;gap:1rem;padding:1rem 1.25rem;}
       .bottom-bar .card-body{display:none}
       .tagline{font-size:1.02rem}
       .btn{font-size:0.92rem;padding:0.7rem 1.5rem}
@@ -332,6 +335,8 @@
     document.getElementById('panel').classList.add('open');
     document.getElementById('panel').scrollTop = 0;
   }
+
+  
   function closePanel(){
     document.getElementById('panelOverlay').classList.remove('open');
     document.getElementById('panel').classList.remove('open');
