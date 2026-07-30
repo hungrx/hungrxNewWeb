@@ -22,7 +22,7 @@
 
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--rule)}
-    .nav-inner{max-width:1360px;margin:0 auto;padding:0.8rem 4vw;display:flex;align-items:center;justify-content:space-between}
+    .nav-inner{max-width:1360px;margin:0 auto;padding:0.8rem 4vw;display:flex;align-items:center;justify-content:space-between;position:relative}
     .brand{font-family:var(--font-brand);font-weight:900;font-size:clamp(1.5rem,2.2vw,1.95rem);letter-spacing:-0.04em;color:var(--black);text-decoration:none}
 
     /* PAGE — locked to one screen */
@@ -51,8 +51,7 @@
     .step-detail{font-size:clamp(0.92rem,1.02vw,1.02rem);font-weight:400;color:rgba(0,0,0,0.52);line-height:1.5}
 
     /* BOTTOM BAR — tagline, CTA, energy stats all in same row */
-    .bottom-bar{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0.5rem 0 0.75rem;}
-    .bottom-left{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+    .bottom-bar{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;align-items:center;padding:0.5rem 0 0.75rem;transform:translateY(-4rem);}
     .tagline{font-family:var(--font-head);font-weight:600;font-size:clamp(1.05rem,1.3vw,1.3rem);color:var(--faint);line-height:1.4}
     .cta-side{display:flex;flex-direction:column;gap:0.45rem}
     .btn{display:inline-flex;align-items:center;gap:0.55rem;padding:0.78rem 1.9rem;background:var(--green);border:2px solid var(--black);border-radius:9999px;font-family:var(--font-body);font-weight:700;font-size:0.98rem;color:var(--black);cursor:pointer;box-shadow:3px 3px 0 0 var(--black);transition:transform .15s,box-shadow .15s;width:fit-content}
@@ -63,10 +62,10 @@
     .trust{font-size:0.6rem;font-weight:600;color:var(--faint);letter-spacing:0.07em;text-transform:uppercase}
 
     /* RIGHT — card fills row height */
-    .right{grid-column:2;grid-row:1;display:flex;align-items:stretch;justify-content:center;height:100%;padding:0.75rem 0 0;overflow:hidden}
-    .card{background:var(--white);border-radius:1.25rem;overflow:hidden;width:91%;height:100%}
-    .card img{width:100%;height:100%;object-fit:contain;display:block}
-    .card-body{width:91%;margin:0 auto;padding:1.1rem 1.5rem 1.3rem;box-sizing:border-box}
+    .right{grid-column:2;grid-row:1;display:flex;align-items:stretch;justify-content:flex-end;height:100%;padding:0.75rem 0 0;overflow:visible}
+    .card{background:var(--white);border-radius:1.25rem;overflow:hidden;width:91%;height:100%;transform:translateX(3.5rem)}
+    .card img{width:100%;height:100%;object-fit:cover;display:block;object-position:100% center;transform:translateY(-6.5rem)}
+    .card-body{padding:1.1rem 1.5rem 1.3rem;transform:translateY(-0.3rem)}
     .card-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem}
     .card-lbl{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--faint)}
     .card-val{font-size:1.3rem;font-weight:900}
@@ -106,8 +105,7 @@
       .step{flex-direction:row;align-items:baseline;gap:0.7rem}
       .step-label{min-width:4.5rem;font-size:1.05rem}
       .step-detail{font-size:0.92rem}
-      .bottom-bar{grid-column:1;grid-template-columns:1fr;padding:1rem 1.25rem;}
-      .bottom-left{gap:1rem}
+      .bottom-bar{grid-column:1;grid-template-columns:1fr auto;gap:1rem;padding-top:1rem;padding-bottom:1rem;}
       .bottom-bar .card-body{display:none}
       .tagline{font-size:1.02rem}
       .btn{font-size:0.92rem;padding:0.7rem 1.5rem}
@@ -159,9 +157,13 @@
     .nav-story{display:flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-family:var(--font-head);font-weight:800;font-size:1.05rem;letter-spacing:0.01em;color:#5a761e;white-space:nowrap;transition:color .15s}
     .nav-story:hover{color:var(--black)}
     .nav-story svg{width:13px;height:13px;flex-shrink:0}
+    .nav-discover{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-head);font-weight:700;font-size:0.9rem;letter-spacing:0.01em;color:rgba(0,0,0,0.55);text-decoration:underline;text-decoration-color:#BADA55;text-decoration-thickness:1.5px;text-underline-offset:4px;white-space:nowrap;transition:color .15s,text-decoration-color .15s}
+    .nav-discover:hover{color:var(--black);text-decoration-color:#5a761e}
+    .nav-right{display:flex;align-items:center}
     @media(max-width:768px){
       .nav-story{font-size:0.85rem;gap:0.3rem}
       .nav-story svg{width:11px;height:11px}
+      .nav-discover{font-size:0.72rem}
     }
 
     @media(max-width:768px){
@@ -173,10 +175,13 @@
 <body>
 
 <nav><div class="nav-inner"><a class="brand" href="#">hungrX</a>
-  <button class="nav-story" onclick="openPanel('story')" aria-label="Read our story">
-    Our Story
-    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg>
-  </button>
+  <a class="nav-discover" href="/guides/">Discover Meals</a>
+  <div class="nav-right">
+    <button class="nav-story" onclick="openPanel('story')" aria-label="Read our story">
+      Our Story
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg>
+    </button>
+  </div>
 </div></nav>
 
 <div class="page">
@@ -210,14 +215,12 @@
     </div>
   </div>
   <div class="bottom-bar">
-    <div class="bottom-left">
-      <p class="tagline">Eat what you love.<br>Stay on track.</p>
-      <div class="cta-side">
-        <button class="btn" onclick="openSheet()">
-          Continue
-          <span class="dot"><svg viewBox="0 0 10 10" fill="none" stroke="#BADA55" stroke-width="2.2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
-        </button>
-      </div>
+    <p class="tagline">Eat what you love.<br>Stay on track.</p>
+    <div class="cta-side">
+      <button class="btn" onclick="openSheet()">
+        Continue
+        <span class="dot"><svg viewBox="0 0 10 10" fill="none" stroke="#BADA55" stroke-width="2.2" stroke-linecap="round"><path d="M1 5h8M5 1l4 4-4 4"/></svg></span>
+      </button>
     </div>
     <div class="card-body">
       <div class="card-row">
@@ -238,12 +241,13 @@
     <div class="footer-top">
       <a class="footer-brand" href="#">hungrX</a>
       <div class="footer-social">
-        <a href="https://instagram.com/hungrx" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a>
-        <a href="https://x.com/hungrx" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+        <a href="https://www.instagram.com/hungrx_app/?hl=en" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://x.com/hungr_x" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
         <a href="https://linkedin.com/company/hungrx" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="7.5" cy="6.7" r="0.6" fill="currentColor" stroke="none"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><path d="M11 17v-4.5a2.5 2.5 0 0 1 5 0V17"/><line x1="11" y1="10" x2="11" y2="17"/></svg></a>
       </div>
     </div>
     <div class="footer-links">
+      <a href="/guides/">Discover Meals</a>
       <a href="terms-of-service.html">Terms</a>
       <a href="privacy-policy.html">Privacy</a>
       <a href="cookie-policy.html">Cookies</a>
@@ -260,20 +264,20 @@
   <div class="sheet-points">
     <span class="sheet-point">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      7-day free trial
+      Try for free
     </span>
     <span class="sheet-point">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      No credit card required
+      No commitment. Cancel anytime
     </span>
   </div>
   <div class="sheet-btns">
-    <a href="https://apps.apple.com" class="stn ios">
+    <a href="https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809" class="stn ios">
       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       <span class="stn-text"><span class="stn-sub">Download on the</span><span class="stn-name">App Store</span></span>
       <span class="stn-free">Free</span>
     </a>
-    <a href="https://play.google.com" class="stn android">
+    <a href="https://play.google.com/store/apps/details?id=com.hungrx.app" class="stn android">
       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M3.18 23.76c.3.17.65.19.97.07L13.86 12 3.04.17C2.95.2 2.87.24 2.8.29 2.3.6 2 1.14 2 1.74v20.52c0 .6.3 1.14.8 1.45.13.08.25.05.38.05zm14.82-12l-2.96-2.96L3 .56l12.5 6.6 2.5-1.36zm.5 1.1l-2.83 2.83L14 14l1.5.79L18 16.14c.5.27 1.05.25 1.52-.04.48-.29.76-.8.76-1.38 0-.56-.28-1.07-.78-1.36zm-2.97 3.9L3 23.44l12.05-7.25 1.48 3.57z"/></svg>
       <span class="stn-text"><span class="stn-sub">Get it on</span><span class="stn-name">Google Play</span></span>
       <span class="stn-free">Free</span>
