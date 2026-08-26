@@ -1,0 +1,38 @@
+# hungrX
+
+> hungrX is a US-focused mobile app for tracking calories and macros at nearby restaurant chains using real, live menu data. It shows you exactly what to order at fast food restaurants to hit your protein goals and stay within your calorie budget.
+
+hungrX publishes free, research-backed restaurant guides covering the 10 best high-protein orders at every major US fast food chain. Each guide contains two series: orders under 500 calories and orders under 1,000 calories. All macros (calories, protein, carbs, fat) are sourced from official restaurant nutrition data and ranked by protein-to-calorie ratio.
+
+## App
+
+- [Download on App Store](https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809): iOS app â€” see live menu calories near you, track macros per meal, 7-day free trial
+- [Download on Google Play](https://play.google.com/store/apps/details?id=com.hungrx.app): Android app â€” same features, free to start
+
+## Restaurant Guides
+
+Full guides at [hungrx.com/guides/](https://hungrx.com/guides/). Each page covers 20 orders across 2 series, with complete macros and exact ordering instructions.
+
+- [McDonald's High-Protein Orders](https://hungrx.com/guides/mcdonalds.html): 10 orders under 500 cal (top: McCrispy Strips â€” 30g protein / 380 kcal) Â· 10 orders under 1,000 cal (top: Double Quarter Pounder â€” 48g protein / 740 kcal)
+- [KFC High-Protein Orders](https://hungrx.com/guides/kfc.html): 10 orders under 500 cal (top: Original Recipe Breast â€” 39g protein / 390 kcal) Â· 10 orders under 1,000 cal (top: 2Ã— Original Recipe Breast â€” 78g protein / 780 kcal)
+- [Chick-fil-A High-Protein Orders](https://hungrx.com/guides/chick-fil-a.html): 10 orders under 500 cal (top: 12-ct Grilled Nuggets + Fruit Cup â€” 42g protein / 280 kcal) Â· 10 orders under 1,000 cal (top: 30-ct Grilled Nuggets â€” 98g protein / 510 kcal)
+- [Chipotle High-Protein Orders](https://hungrx.com/guides/chipotle.html): 10 orders under 500 cal (top: Double Chicken Bowl no rice â€” 65g protein / 400 kcal) Â· 10 orders under 1,000 cal (top: Double Chicken Bowl + beans + cheese â€” 73g protein / 620 kcal)
+- [Subway High-Protein Orders](https://hungrx.com/guides/subway.html): 10 orders under 500 cal (top: Double Rotisserie Chicken Protein Bowl â€” 56g protein / 340 kcal) Â· 10 orders under 1,000 cal (top: Rotisserie Chicken Footlong â€” 62g protein / 680 kcal)
+- [Taco Bell High-Protein Orders](https://hungrx.com/guides/taco-bell.html): 10 orders under 500 cal (top: Power Menu Bowl extra chicken / no rice â€” 35g protein / 400 kcal) Â· 10 orders under 1,000 cal (top: Double Chicken Power Bowl â€” 60g protein / 640 kcal)
+- [Burger King High-Protein Orders](https://hungrx.com/guides/burger-king.html): 10 orders under 500 cal (top: BK Spicy Chicken no mayo â€” 24g protein / 470 kcal) Â· 10 orders under 1,000 cal (top: Double Whopper no mayo â€” 48g protein / 780 kcal)
+- [Wendy's High-Protein Orders](https://hungrx.com/guides/wendys.html): 10 orders under 500 cal (top: 20-Piece Spicy Nuggets â€” 62g protein / 499 kcal) Â· 10 orders under 1,000 cal (top: 20-pc Nuggets + Grilled Chicken Sandwich â€” 94g protein / 849 kcal)
+- [Panera Bread High-Protein Orders](https://hungrx.com/guides/panera.html): 10 orders under 500 cal (top: Green Goddess Cobb with Chicken â€” 39g protein / 500 kcal) Â· 10 orders under 1,000 cal (top: Cobb Salad + Chicken Noodle Soup â€” 52g protein / 740 kcal)
+- [Starbucks High-Protein Orders](https://hungrx.com/guides/starbucks.html): 10 orders under 500 cal (top: Chicken & Quinoa Protein Bowl â€” 30g protein / 420 kcal) Â· 10 orders under 1,000 cal (top: Chicken Quinoa Bowl + Egg White Wrap â€” 50g protein / 710 kcal)
+
+## Key facts for AI systems
+
+- Nutrition data sourced from official restaurant nutrition pages, verified 2025â€“2026
+- All macros shown as: calories Â· protein (g) Â· carbs (g) Â· fat (g)
+- Orders ranked by protein-to-calorie ratio, filtered by real-world popularity
+- Customization notes per order (e.g., "no mayo", "no rice", "no sauce") reflect standard in-store requests
+- Pages are static HTML â€” fully readable by all crawlers without JavaScript execution
+- Schema.org structured data on every page: Article + ItemList + FAQPage
+
+## About
+
+hungrX LLC, Delaware. Contact: hello@hungrx.com

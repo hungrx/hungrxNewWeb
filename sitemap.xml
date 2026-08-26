@@ -19,70 +19,70 @@
 
   <!-- ── Individual restaurant pages ──────────────────────── -->
   <url>
-    <loc>https://hungrx.com/guides/mcdonalds/</loc>
+    <loc>https://hungrx.com/guides/mcdonalds.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/kfc/</loc>
+    <loc>https://hungrx.com/guides/kfc.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/chick-fil-a/</loc>
+    <loc>https://hungrx.com/guides/chick-fil-a.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/chipotle/</loc>
+    <loc>https://hungrx.com/guides/chipotle.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/subway/</loc>
+    <loc>https://hungrx.com/guides/subway.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/taco-bell/</loc>
+    <loc>https://hungrx.com/guides/taco-bell.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/burger-king/</loc>
+    <loc>https://hungrx.com/guides/burger-king.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/wendys/</loc>
+    <loc>https://hungrx.com/guides/wendys.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/panera/</loc>
+    <loc>https://hungrx.com/guides/panera.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://hungrx.com/guides/starbucks/</loc>
+    <loc>https://hungrx.com/guides/starbucks.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
