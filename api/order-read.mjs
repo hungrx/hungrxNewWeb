@@ -14,7 +14,7 @@ You receive ONE short message the visitor typed, plus which question they were a
 
 Pick exactly ONE label:
 - restaurant: a restaurant, chain, cafe, food truck, diner, or a place type like "local thai place", "my office cafeteria", "home". Tolerate typos, spaces, slang and missing apostrophes ("apple bees", "chik fil a", "mickey d's").
-- food_order: food and/or drinks someone would order (any cuisine, any spelling).
+- food_order: real food and/or drinks someone would order at a restaurant (any cuisine, any spelling). Things that are not edible ("a rock", "my shoe", "air") are offtopic, not food_order.
 - greeting: hi / hello / hey only.
 - unsure: idk, nothing, no idea, not sure, anything, depends.
 - gibberish: random letters or meaningless text.
