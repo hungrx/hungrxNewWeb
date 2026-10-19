@@ -152,6 +152,7 @@
   </style>
 </head>
 <body>
+  <div id="ts" style="position:absolute;width:0;height:0;overflow:hidden"></div>
   <div class="screen">
     <div class="head">
       <a class="back" id="back" href="/" aria-label="Back to hungrX home" aria-disabled="true">
@@ -203,6 +204,13 @@
     // live site → Vercel function /api/order-reveal (Gemini). Local/preview copies → example numbers.
     const AI_ENDPOINT = /^https?:$/.test(location.protocol) && /hungrx\.com$|vercel\.app$/.test(location.hostname) ? '/api/order-reveal' : '';
     let place = '';
+    const READ_ENDPOINT = AI_ENDPOINT ? '/api/order-read' : '';
+    const TURNSTILE_SITEKEY = '';   // Cloudflare Turnstile site key (public). Empty = bot check off.
+    let session = '', turnstileToken = '';
+    if (TURNSTILE_SITEKEY && READ_ENDPOINT) {
+      window.onTurnstileLoad = () => { try { turnstile.render('#ts', { sitekey: TURNSTILE_SITEKEY, size: 'invisible', callback: t => { turnstileToken = t; } }); } catch (e) {} };
+      const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad'; sc.async = true; document.head.appendChild(sc);
+    }
     const IOS = 'https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809';
     const ANDROID = 'https://play.google.com/store/apps/details?id=com.hungrx.app';
     const isAndroid = /android/i.test(navigator.userAgent);
@@ -369,8 +377,9 @@
     function gibberish(t) {
       const letters = t.replace(/[^a-z]/gi, '');
       if (!letters.length) return true;                                   // only emoji / numbers / symbols
-      if (/(.)\1{3,}/i.test(t)) return true;                              // aaaaa
-      if (/[bcdfghjklmnpqrstvwxz]{6,}/i.test(letters)) return true;       // asdfghjk
+      if (/(.)\1{3,}/i.test(t)) return true;
+      if (/asdf|sdfg|dfgh|fghj|ghjk|hjkl|qwer|wert|erty|rtyu|tyui|yuio|zxcv|xcvb|cvbn|vbnm/i.test(letters)) return true;                              // aaaaa
+      if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(letters)) return true;       // asdfghjk
       if (letters.length >= 4 && !/[aeiouy]/i.test(letters)) return true; // no vowels
       return false;
     }
@@ -387,17 +396,18 @@
       if (FILLER.test(x)) return { ok: false, why: 'unclear' };
       if (gibberish(x)) return { ok: false, why: 'gibberish' };
       let score = 0;
-      if (CHAINS.test(x)) score += 3;
+      const squashed = x.toLowerCase().replace(/[\s'’.\-]/g, '');
+      if (CHAINS.test(x) || CHAINS.test(squashed)) score += 3;
       if (FOOD.test(x)) score += 2;
       const words = x.split(/\s+/).length;
-      if (step === 1) { if (PLACEWORD.test(x)) score += 2; if (words > 6) score -= 1; if (/\?$/.test(x)) score -= 2; }
+      if (step === 1) { if (PLACEWORD.test(x)) score += 2; if (words <= 5 && /[a-z]{3}/i.test(x) && !/\b(you|your|u|ur|my|me|i|im)\b/i.test(x)) score += 2; if (words > 6) score -= 1; if (/\?$/.test(x)) score -= 2; }
       if (/\b(you|your|u|ur|my|me|i|im|i'm)\b/i.test(x) && !CHAINS.test(x) && !FOOD.test(x) && !PLACEWORD.test(x)) score -= 2;
       if (step === 2) { if (words <= 25) score += 1; if (/\?$/.test(x) && !FOOD.test(x)) score -= 2; }
       return score >= 2 ? { ok: true } : { ok: false, why: 'unclear' };
     }
     const REASK = {
-      1: { greet: 'hey hey 😄 where do you end up eating out the most?', unsure: 'haha fair. where did you last grab food from?', gibberish: "lol didn't catch that 😅 where do you eat out the most?", unclear: "hmm which spot is that? 😅 like mcdonald's, chipotle, or a local place", bot: "haha i'm hungrX's assistant 🙂 so where do you eat out the most?", offtopic: 'haha i only do food 😄 where do you eat out the most?', abuse: "sorry, didn't catch that. where do you end up eating out the most?" },
-      2: { greet: 'haha hey 😄 so what do you usually order there?', unsure: "no stress. what's the last thing you got there?", gibberish: "lol didn't catch that 😅 what do you usually order?", unclear: 'hmm what do you usually order there? the whole thing', bot: "haha i'm hungrX's assistant 🙂 so what do you usually get there?", offtopic: 'haha i only do food 😄 what do you usually get there?', abuse: 'sorry, didn\'t catch that. ' + 'ASK2' }
+      1: { food_at_place: 'sounds good 😄 which restaurant is that from?', greet: 'hey hey 😄 where do you end up eating out the most?', unsure: 'haha fair. where did you last grab food from?', gibberish: "lol didn't catch that 😅 where do you eat out the most?", unclear: "hmm which spot is that? 😅 like mcdonald's, chipotle, or a local place", bot: "haha i'm hungrX's assistant 🙂 so where do you eat out the most?", offtopic: 'haha i only do food 😄 where do you eat out the most?', abuse: "sorry, didn't catch that. where do you end up eating out the most?" },
+      2: { place_at_order: 'got it 😄 and what do you usually order there?', greet: 'haha hey 😄 so what do you usually order there?', unsure: "no stress. what's the last thing you got there?", gibberish: "lol didn't catch that 😅 what do you usually order?", unclear: 'hmm what do you usually order there? the whole thing', bot: "haha i'm hungrX's assistant 🙂 so what do you usually get there?", offtopic: 'haha i only do food 😄 what do you usually get there?', abuse: 'sorry, didn\'t catch that. ' + 'ASK2' }
     };
     let strikes = 0, abuses = 0;
     function detectChain(t) {
@@ -425,7 +435,7 @@
       if (AI_ENDPOINT) {
         try {
           const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 28000);
-          const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order }), signal: ctrl.signal });
+          const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order, session }), signal: ctrl.signal });
           clearTimeout(t);
           res = await r.json();
         } catch (e) { res = null; }
@@ -438,6 +448,28 @@
       d.remove();
       return res;
     }
+
+    // The AI "reader": labels the answer only (never writes to the visitor). null = use local rules.
+    async function readAnswer(text, which) {
+      if (!READ_ENDPOINT) return null;
+      const th = $('thread');
+      const d = document.createElement('div');
+      d.className = 'b bot dots'; d.innerHTML = '<i></i><i></i><i></i>';
+      const last = th.lastElementChild; if (last && last.classList.contains('bot')) d.style.marginTop = '2px';
+      th.appendChild(d); scrollDown();
+      try {
+        if (TURNSTILE_SITEKEY && !session) { for (let i = 0; i < 30 && !turnstileToken; i++) await wait(100); }
+        const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 9000);
+        const r = await fetch(READ_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ step: which, text, session, turnstile: turnstileToken }), signal: ctrl.signal });
+        clearTimeout(t);
+        const j = await r.json();
+        if (j.session) session = j.session;
+        if (r.status === 403 && j.reason === 'bot') return { label: 'blocked' };
+        return j.ok ? j : null;
+      } catch (e) { return null; }
+      finally { d.remove(); }
+    }
+    const LABEL_WHY = { greeting: 'greet', unsure: 'unsure', gibberish: 'gibberish', offtopic: 'offtopic', bot_question: 'bot', abuse: 'abuse', minor: 'minor', safety: 'safety' };
 
     function endChat(note) {
       lock(true); busy = true;
@@ -457,7 +489,20 @@
       $('input').value = ''; $('field').classList.remove('has');
       userBubble(text); lock(true);
       const now = step + 1;
-      const v = judge(text, now);
+      let v = judge(text, now), name = '';
+      // instant local block for the clear cases (no AI call, no cost)
+      const localOnly = !v.ok && ['safety', 'minor', 'abuse'].includes(v.why);
+      if (!localOnly) {
+        const r = await readAnswer(text, now === 1 ? 'place' : 'order');
+        if (r && r.label === 'blocked') { endChat(); return; }
+        if (r) {
+          if (now === 1 && r.label === 'restaurant') { v = { ok: true }; name = r.name || ''; }
+          else if (now === 2 && r.label === 'food_order') v = { ok: true };
+          else if (now === 1 && r.label === 'food_order') v = { ok: false, why: 'food_at_place' };
+          else if (now === 2 && r.label === 'restaurant') v = { ok: false, why: 'place_at_order' };
+          else v = { ok: false, why: LABEL_WHY[r.label] || 'unclear' };
+        }
+      }
 
       if (!v.ok) {
         track('order_chat_rejected', { step: now, why: v.why });
@@ -482,8 +527,8 @@
       tag(step === 1 ? 'chat_place' : 'chat_order', text);
       if (step === 1) {
         strikes = 0;
-        chain = detectChain(text); place = text;
-        await botSays(chain.react);
+        chain = detectChain(name || text); place = name || text;
+        await botSays(chain === DATA.other && name ? 'ooh ' + name + ', nice' : chain.react);
         await botSays(chain.ask);
       } else if (step === 2) {
         const res = await askAI(text);

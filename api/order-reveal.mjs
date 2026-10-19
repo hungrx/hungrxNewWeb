@@ -1,12 +1,11 @@
 // hungrX /order chat — calorie reveal + swap, powered by Gemini (with Google Search grounding).
 // The API key lives ONLY in Vercel: Project → Settings → Environment Variables → GEMINI_API_KEY.
 
+import { gate, clean, gemini, checkSession } from './_guard.mjs';
+
 export const config = { maxDuration: 30 };
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
-const ALLOWED_ORIGINS = ['https://hungrx.com', 'https://www.hungrx.com'];
-const HITS = new Map(); // best-effort per-IP limit (resets when the function cold-starts)
-const LIMIT_PER_HOUR = 6;
 
 const SYSTEM = `You are hungrX's menu nutrition engine. A US customer told us where they usually eat and what they usually order there.
 Return the real nutrition of THAT exact order, then ONE better swap they would genuinely enjoy.
@@ -38,7 +37,6 @@ Reply with ONE JSON object and nothing else, no markdown:
  "swap_items": [{"name": "...", "cal": 0, "p": 0, "c": 0, "f": 0}],
  "swap_text": "...", "keep": "same ..."}`;
 
-const clean = s => String(s || '').replace(/[<>{}`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80);
 const int = n => Math.round(Number(n));
 const okNum = (n, max) => Number.isFinite(Number(n)) && Number(n) >= 0 && Number(n) <= max;
 
@@ -79,53 +77,17 @@ export function parse(text) {
 }
 
 export default async function handler(req, res) {
-  const origin = req.headers.origin || '';
-  if (ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Cache-Control', 'no-store');
-  if (req.method === 'OPTIONS') { res.setHeader('Access-Control-Allow-Methods', 'POST'); res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); return res.status(204).end(); }
-  if (req.method !== 'POST') return res.status(405).json({ ok: false, reason: 'method' });
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) return res.status(403).json({ ok: false, reason: 'origin' });
-
-  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-  const now = Date.now(), hour = 3600e3;
-  const hits = (HITS.get(ip) || []).filter(t => now - t < hour);
-  if (hits.length >= LIMIT_PER_HOUR) return res.status(429).json({ ok: false, reason: 'limit' });
-  hits.push(now); HITS.set(ip, hits);
-
-  const body = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return {}; } })() : (req.body || {});
+  const g = gate(req, res); if (!g) return;
+  const { body } = g;
+  if (!checkSession(body.session)) return res.status(403).json({ ok: false, reason: 'session' });
   const place = clean(body.place), order = clean(body.order);
   if (!place || !order) return res.status(400).json({ ok: false, reason: 'input' });
-  if (!process.env.GEMINI_API_KEY) return res.status(500).json({ ok: false, reason: 'config' });
 
-  const payload = {
+  const text = await gemini(MODEL, {
     systemInstruction: { parts: [{ text: SYSTEM }] },
     contents: [{ role: 'user', parts: [{ text: `Restaurant: ${place}\nUsual order: ${order}` }] }],
     tools: [{ google_search: {} }],
     generationConfig: { temperature: 0.2, maxOutputTokens: 2048, thinkingConfig: { thinkingLevel: 'low' } }
-  };
-
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 25000);
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
-      body: JSON.stringify(payload),
-      signal: ctrl.signal
-    });
-    clearTimeout(timer);
-    if (!r.ok) {
-      const errText = (await r.text()).slice(0, 300);
-      console.error('gemini_error', r.status, errText);
-      return res.status(200).json({ ok: false, reason: 'no_data', debug: 'gemini_' + r.status + ': ' + errText.replace(/AIza[\w-]+|AQ\.[\w-]+/g, '[key]') });
-    }
-    const data = await r.json();
-    const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
-    const out = validate(parse(text));
-    if (!out.ok && out.reason === 'no_data') out.debug = 'model: ' + (data.candidates?.[0]?.finishReason || '') + ' ' + text.slice(0, 300);
-    return res.status(200).json(out);
-  } catch (e) {
-    console.error('handler_error', e && e.message);
-    return res.status(200).json({ ok: false, reason: 'no_data', debug: 'exception: ' + String(e && e.message).slice(0, 200) });
-  }
+  }, 25000);
+  return res.status(200).json(text == null ? { ok: false, reason: 'no_data' } : validate(parse(text)));
 }
