@@ -2,12 +2,12 @@
 
 > hungrX is a US-focused mobile app for tracking calories and macros at nearby restaurant chains using real, live menu data. It shows you exactly what to order at fast food restaurants to hit your protein goals and stay within your calorie budget.
 
-hungrX publishes free, research-backed restaurant guides covering the 10 best high-protein orders at every major US fast food chain. Each guide contains two series: orders under 500 calories and orders under 1,000 calories. All macros (calories, protein, carbs, fat) are sourced from official restaurant nutrition data and ranked by protein-to-calorie ratio.
+hungrX publishes research-backed restaurant guides covering the 10 best high-protein orders at every major US fast food chain. Each guide contains two series: orders under 500 calories and orders under 1,000 calories. All macros (calories, protein, carbs, fat) are sourced from official restaurant nutrition data and ranked by protein-to-calorie ratio.
 
 ## App
 
-- [Download on App Store](https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809): iOS app â€” see live menu calories near you, track macros per meal, 7-day free trial
-- [Download on Google Play](https://play.google.com/store/apps/details?id=com.hungrx.app): Android app â€” same features, free to start
+- [Download on App Store](https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809): iOS app â€” see live menu calories near you, track macros per meal
+- [Download on Google Play](https://play.google.com/store/apps/details?id=com.hungrx.app): Android app â€” same features
 
 ## Restaurant Guides
 

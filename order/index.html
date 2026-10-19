@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>hungrX — Check your order</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet" />
+  <!--ANALYTICS-->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDB0C3KP9S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QDB0C3KP9S');
+  </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w4yyk6te55");
+  </script>
+  <!-- Meta Pixel (hungrX Web) -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2331393997705409');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt=""
+    src="https://www.facebook.com/tr?id=2331393997705409&ev=PageView&noscript=1" /></noscript>
+  <!--/ANALYTICS-->
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: #fff; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #000;
+    }
+    button { font: inherit; border: none; background: none; padding: 0; cursor: pointer; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    .screen { position: fixed; inset: 0; display: flex; flex-direction: column; background: #fff; }
+
+    .head {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: calc(12px + env(safe-area-inset-top)) 14px 26px;
+      background: linear-gradient(#fff 55%, rgba(255,255,255,0));
+    }
+    .logo {
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0,0,0,.10), 0 0 0 .5px rgba(0,0,0,.04);
+    }
+    .back, .spacer { width: 44px; height: 56px; }
+    .back { display: flex; align-items: center; justify-content: flex-start; padding-left: 8px; color: #c7c7cc; -webkit-tap-highlight-color: transparent; }
+    .back[aria-disabled="true"], .contact[aria-disabled="true"] { pointer-events: none; }
+    .contact { -webkit-tap-highlight-color: transparent; }
+    .contact { display: flex; flex-direction: column; align-items: center; }
+    .avatar { width: 56px; height: 56px; border-radius: 50%; display: block; background: #000; box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+    .logo {
+      margin-top: -6px; position: relative;
+      border-radius: 999px; padding: 5px 14px 6px;
+      font-family: Montserrat, sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -.3px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .logo svg { color: #b4b4b8; }
+
+    .col { max-width: 640px; margin: 0 auto; padding: 0 12px; width: 100%; }
+    .body { flex: 1; overflow-y: auto; overflow-x: hidden; padding-top: calc(104px + env(safe-area-inset-top)); }
+    .thread { display: flex; flex-direction: column; padding: 4px 8px 16px; }
+
+    .b {
+      position: relative; max-width: 75%;
+      padding: 7px 13px 8px; border-radius: 20px;
+      font-size: 17px; line-height: 22px; letter-spacing: -.4px;
+      margin-top: 2px; word-wrap: break-word;
+      animation: pop .22s ease; transform-origin: bottom left;
+    }
+    @supports (corner-shape: squircle) { .b, .card { corner-shape: squircle; border-radius: 28px; } }
+    .b p { margin: 0; }
+    .b strong { font-weight: 600; }
+    .bot { background: #e9e9eb; color: #000; align-self: flex-start; }
+    .me  { background: #0b84fe; color: #fff; align-self: flex-end; transform-origin: bottom right; }
+    .bot + .me, .me + .bot, .card + .me { margin-top: 10px; }
+
+    .b .tail { position: absolute; bottom: -3px; width: 18px; height: 22px; display: none; }
+    .b.tailed { margin-bottom: 3px; }
+    .b.tailed .tail { display: block; }
+    .me.tailed  { border-bottom-right-radius: 16px !important; }
+    .bot.tailed { border-bottom-left-radius: 16px !important; }
+    .me .tail  { right: -5px; fill: #0b84fe; }
+    .bot .tail { left: -5px; fill: #e9e9eb; transform: scaleX(-1); }
+
+    .dots { display: flex; gap: 4px; padding: 11px 13px; margin-top: 10px; }
+    .dots i { width: 8px; height: 8px; border-radius: 50%; background: #8e8e93; animation: blink 1.2s infinite; }
+    .dots i:nth-child(2) { animation-delay: .2s; }
+    .dots i:nth-child(3) { animation-delay: .4s; }
+
+    .delivered { align-self: flex-end; font-size: 11px; color: #8e8e93; font-weight: 500; margin: 3px 4px 0 0; }
+
+    .card {
+      align-self: flex-start; width: 260px; max-width: 75%; margin-top: 2px;
+      border-radius: 18px; overflow: hidden; background: #e9e9eb;
+      animation: pop .25s ease; transform-origin: bottom left; display: block;
+    }
+    .card .img {
+      height: 140px; background: #bada55; display: flex; align-items: center; justify-content: center;
+      font-family: Montserrat, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -1px; color: #000;
+    }
+    .card .meta { padding: 9px 12px 10px; }
+    .card .t { font-size: 15px; font-weight: 600; line-height: 19px; letter-spacing: -.2px; }
+    .card .d { font-size: 13px; color: #8e8e93; margin-top: 2px; }
+
+    .bar { padding: 8px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(rgba(255,255,255,0), #fff 40%); }
+    .field {
+      display: flex; align-items: center; min-height: 44px;
+      background: #fff; border-radius: 22px; padding: 0 6px 0 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.09), 0 0 0 .5px rgba(0,0,0,.05);
+    }
+    .input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font: inherit; font-size: 17px; letter-spacing: -.4px; color: #000; padding: 10px 0; }
+    .input::placeholder { color: #b4b4b8; }
+    .input:disabled { background: transparent; }
+    .send {
+      width: 32px; height: 32px; border-radius: 50%; background: #d1d1d6;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s;
+    }
+    .field.has .send { background: #0b84fe; }
+
+    @keyframes pop { from { opacity: 0; transform: scale(.92) translateY(6px); } to { opacity: 1; transform: none; } }
+    @keyframes blink { 0%, 60%, 100% { opacity: .35; } 30% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="head">
+      <a class="back" id="back" href="/" aria-label="Back to hungrX home" aria-disabled="true">
+        <svg viewBox="0 0 12 21" width="10" height="17"><path d="M10.5 1.5 1.5 10.5l9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="contact" id="contact" href="/" aria-label="hungrX home" aria-disabled="true">
+        <img class="avatar" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAC0ALQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD4yooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKBQAUuD6V9ifs2fspaVrfhey8W/Edrt1v4hNaaVDIYsRNyryuPmyw5CqRgEZOeB7bqX7MHwTvLE2yeDxaNjCzW99Osi++S5BP1BoA/M2ivZv2rPhBpPwi8V6dYaPrs2o2+owPcLBcIBPbKG2jcy8MG5wcD7p4rxmgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAqxpxgF/bm6GYBKvmj/AGcjP6ZqvXY/BvwHqfxH+IWmeFdNVx9pk3XUwGRbwKQZJD9B09SQO9AH6w2LW72UD2hQ27RqYin3SmPlx7YxU1V9NtINP0+3sbVNkFvEsUS/3VUAAfkBVDxh4m0HwhoFxr3iTU4NN0232iWeXOAWIAAABJJJ6AGgD54/bO0OHxfZ6homi/DbVtV8WWtjb3MGsR6cXQ2wn+eGORTkuNxJTHQsRXwPIjxyNHIpV1JDKRggjqK/QP44ftMfDNvhtr2neE/FTX2t3dlJBaC3spcKzjbks6BQACf6c1+fZOTQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAA61+jH7Dvw5tPCPwltfEk9uv9s+IkF1LKV+ZLf/AJYxg+mPnPqW9hX50L1/Cv13+G0Atfh34btgu0Q6TaxgemIUFAHQV4B+3zbGf9ny7lDFfs+pWspx3yxTH/j1e/15V+1tokmvfs8+LrSFC8sFot4oHX9xIsp/8dVqAPy8opT1pKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAHwo0kqxoMsxCge54r9itGtvsekWdoBjyYI48f7qgf0r8i/A8MVz4z0S3nZVil1G3RyxwAplUEn8K/X8dKACoNQtLe/sZ7K6jWW3uI2ilRujIwIIP1BNT0HpQB+QnxC0IeGPHeveHFl85dM1Ge0WT++I5CoP4gCsKvc/21vAWo+EfjTqertA50rxBK1/aT4+Uu2PNQn+8r5OPRlNeGUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABXd+EPhP4y8X+C7zxT4Xs7fWIbKYxXNlazh72MAA7/J+8VOeCMk4PHFcJWl4b17WvDerQ6toGqXemX0Jyk9tKY3HtkdR7Hg0AUZ4ZbeZ4Z43iljYq6OpDKR1BB5BqOvd4Pi14J+IsCaf8avC4bUNoSPxTocaw3qdgZowNso/D6LWZ4v8AgHriaPJ4n+HWq2fj/wANDJ+06XzcwDk4lt/vqcDtn3AoA828B3kOn+ONCv7gKYbbUreaQMMgqsqk59sCv18XpX41vG8cjRyIyupIZWGCD6H0Nfr14B+0/wDCDaD9sLG5/s2284t13+Uu7P45oA26KKKAOU+K3gLQPiR4Mu/DHiCDfBMN0MygeZbSgHbKh7MM/iMg8GvzC+Lvw9174Z+Nbrwzr0Q8yP57e4QHy7mEk7ZE9jjkdiCD0r618f8Ax78QfCf9qDX9H8Si51HwferayRQg5e0UwoDJCD1G4PuTuQSCD19m+IHgL4cfHbwXZXt2YtQt3haTTdVspMSw7gMlW+oGUYEZHIBFAH5aUV0nxO8J3Xgbx9rPhK8nS4m0y6aHzkGBIvBVsdsqQcds4rm6ACiiigAooooAKKKKACiiigAooooAKKKKACiiigArb8HeLPEng7WE1fwxrN5pV6n/AC1t5Cu4ejDoy+zAisSigD6a8IfGr4W+OtWsm+OPgDTn1OKRWGvadCyeaQcj7RGhBYeuNw/2QK+6/DGv6H4k0eHVfD2qWepWEo+Se1lDp9OOhHoeRX49V6t+zHbfE3UvH72Hwv8AECaTqqWr3UgnnKQTRoVBV12sr8sOCPxFAH6hUV5t8MvEnxQd4dL+I3gNLS44UarpN5FNayH1aMv5kf4Bh9K9JoA+SP8Agox4IW78N6L4+tIf39hL9gvWA5MMmWjJ9lfcP+2lfO3wK+OfiT4SWerWmj2Nrfxagudl3LLshkCkK6oG29TluMsABkV+ivxe8Jx+Ofhn4g8KPs36jZPHCz/dSYfNGx9g4U/hX5sfEL4I/E/wLE11r/hO9WzHJu7XFxCo9WaMnb/wLFAHGeKte1XxR4ivvEGt3TXeo38zTXEpAG5j7DgDoABwAAKzKUikoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACinRo0jhEUszHAAGSTX2B+y5+yyL6GDxd8ULCRIGw9losuVZx1DzjqB6R8E/xccEA+b/h/wDC7x/49y3hTwtqGowBtrXIQRwA+hlchM+2c19Vfsh/Af4i/Dr4oyeI/FFjYWli2mTW5CXiSuXdkIGFz/d65r61sbS0sbOKzsraG2toVCRQxIESNR0CqOAPYU66ube1t5Lm5njhhjUs8kjhVUDuSeAKAJT71yGh/EfwvrXxJ1j4f6bdyT6zo9stxeBU/dKCQCgfPLLuXI7Zx1BA8W/aJ/al8MeG9Eu9F+H+pwaz4ilBiW7gG+2s+xff92Rx2C5GeSeMHlf+CcujXN03jLxtfvLNNdTRWazyEs0j8yzEsepJaMmgD7Crivi/4203wZ4c8281q10S6vt0Fje31lNPaRzYyPOMf3VPTJI/Su1PSvkT4x/EzRY/i9r+hp481/wLrdpItq7XEf8AaOh3ybAV823IJiYhgpIUjqTmgDO8aaBoHiWwbVPiB8JbW8tpOf8AhL/hxdLcRNxy7wjnHQkuGryK/wDgTZeIVkuvhJ480XxgoG7+zJ5BZaknt5UmA2ORnj6V2d3Bq2hs3iZfCUtpD1bxX8LdU/0dh6y2oLIB6giKqcniPT/Gzq9+fBnxFmJBWS4H/CO+IAe2JARFKw/3pMntQB8/eJvDmveGNTbTPEOj32lXi9YbuBo2I9QCOR7jisqvpjXvGUmjaRc6PfeIdVaCCJpR4T+I+jG7WTaD8tvdoN2T0U4jHTmvm/UZobi/uJ7a0js4ZJGeO3jZmWJSchAWJJA6ZJJ45oAr0UUUAFFFFABRRRQAUUUUAFFFFABXo/7Pfwruvi545fw5BrFtpUcFs13cTSoXfywyqQiZG5ssOpAA5rzitzwL4r13wV4ntPEfhy/ex1G0bMcijIIPBVlPDKRwQetAH6MfBr9nL4e/Da5j1SC2l1rWozlL/UNrGE+saAbUPvy3vXd/Ej4geEfh5oh1bxXrEFhCc+VGTumnYfwxoOWP04Hcisn4CfErT/ip8O7PxLaIlvdgmDULVWz9nuFA3KP9kghlPow75r5A/wCChPhjXrD4rW3ii6kkuNH1S0jhs25K27xLh4vbJO/33H0NAD/iv+2F411q+ltvAkMXhvTFJCTSRJNdyD1YsCifQA4/vGvDfG3xG8c+NcDxT4p1TVY1OVhmnPlKfURjCj8q5SigAr7t/wCCb+uR3Hw88R+Hi6+dY6ot1t77Jogo/WI18JV9C/sCeI59I+O8OkK5+z63Yz20i9tyL5qN9RsYf8CNAH6JnpX5J/GLWZNf+K3inWZGz9q1a5dfZfMYKPwUAV+s93KILWWY9I0L/kM1+OV9M1zeTXDHLSyM5/Ek0AWNH1fVdGuxeaRqV5p9yvSa1naJx+KkGujl8dy6s2PF+i6d4gJ+9dOn2e86dfPiwWP/AF0D1x1FAGvr+rPdhLCzvNUbR7di1na3tz5vkZA3AYAXt1AGcDisiiigAooooAKKKKACiiigAooooAKKKKACiiigD2n9k34yj4T+NJk1YSy+HNWCx36xgs0LKTsmVe+3JBA6qT1IAr6R/bN8efDfxH+z5Mlj4h0rV7y8uYJNKW1uEkkWRXBZyo5UCMuDkD72Opr4Fpc0AJRRRQAV9H/8E/fCUut/GSTxKXVbbw9aNIw7tLMrRIPpjzD/AMBHrXzhXY/Cn4leLfhlrsmr+FL9beSaPy7iGWMSRTqDkB1PoeQRgjnnk0Afq9qlubrTbm1U4M0Lxg+mVI/rX5Q+JPhd8RPD15Lbat4K163MTFTJ9hkaM47h1BUj3Br1v/hsj4t/8+vhj/wAk/8AjlKP2yfi2Olt4Z/8AJP/AI5QB87XEE1tK0NxFJFIvVHUqR+BqOvTPjJ8avFfxVs7K38T2OhI1nKZI57Oy8uY5GNpcsTt746ZAPavM6ACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z" alt="hungrX" width="56" height="56" />
+        <div class="logo">hungrX <svg viewBox="0 0 6 10" width="6" height="10" aria-hidden="true"><path d="M1 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      </a>
+      <span class="spacer"></span>
+    </div>
+
+    <div class="body" id="body">
+      <div class="col"><div class="thread" id="thread"></div></div>
+    </div>
+
+    <div class="bar">
+      <div class="col">
+        <div class="field" id="field">
+          <input class="input" id="input" type="text" autocomplete="off" placeholder="Message" enterkeyhint="send" maxlength="80" />
+          <button class="send" id="send" type="button" aria-label="Send">
+            <svg viewBox="0 0 14 16" width="12" height="14"><path d="M7 15V2M1.5 7 7 1.5 12.5 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* PREVIEW LOGIC: the reveal below is a stand-in for the AI answer (exact dish, macros, swap from the same order) */
+    const DATA = {
+      olive:     { re: /olive/,                 react: 'ahh the breadsticks get everyone 😅', ask: 'what do you usually get there? the whole thing, breadsticks and all',
+                   item: 'fettuccine alfredo + 2 breadsticks', cal: 1590, p: 41, c: 133, f: 83,
+                   swap: 'lunch-size alfredo, 1 breadstick', swapCal: 790, keep: 'same alfredo' },
+      mcdonalds: { re: /mc ?d|mcdonald|mickey/, react: 'the classic run 😅', ask: "what's your usual order there? the whole thing, like burger, fries, drink",
+                   item: 'large big mac meal', cal: 1360, p: 31, c: 188, f: 57,
+                   swap: 'small fries + diet coke instead', swapCal: 820, keep: 'same big mac',
+                   vague: { item: 'big mac meal', note: 'went with medium fries + coke', cal: 1110, p: 29, c: 144, f: 49 } },
+      chipotle:  { re: /chipot/,                react: 'the line is always worth it lol', ask: "what's your usual? bowl or burrito, and what you get in it",
+                   item: 'chicken burrito, rice, beans, cheese, sour cream, guac', cal: 1290, p: 63, c: 123, f: 61,
+                   swap: 'same thing as a bowl, skip the sour cream', swapCal: 860, keep: 'same chicken + guac' },
+      starbucks: { re: /starbuck|sbux/,         react: 'the drive-thru line 😭', ask: "what's your usual? drink, size, anything to eat with it",
+                   item: 'venti caramel frappuccino', cal: 510, p: 6, c: 82, f: 19,
+                   swap: 'grande, nonfat milk, no whip', swapCal: 250, keep: 'same caramel frapp' },
+      other:     { re: /.^/,                    react: 'ooh nice', ask: 'what do you usually get there? the whole order, sides and drink too',
+                   item: 'that order', cal: 1150, p: 38, c: 120, f: 55,
+                   swap: 'smaller side + zero-cal drink', swapCal: 750, keep: 'same main' }
+    };
+    // live site → Vercel function /api/order-reveal (Gemini). Local/preview copies → example numbers.
+    const AI_ENDPOINT = /^https?:$/.test(location.protocol) && /hungrx\.com$|vercel\.app$/.test(location.hostname) ? '/api/order-reveal' : '';
+    let place = '';
+    const IOS = 'https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809';
+    const ANDROID = 'https://play.google.com/store/apps/details?id=com.hungrx.app';
+    const isAndroid = /android/i.test(navigator.userAgent);
+    const TAIL = '<svg class="tail" viewBox="0 0 17 21" aria-hidden="true"><path d="M16.8869 20.1846C11.6869 20.9846 6.55352 18.1212 4.88685 16.2879C6.60472 12.1914 -4.00107 2.24186 2.99893 2.24148C4.61754 2.24148 6 -1.9986 11.8869 1.1846C11.9081 2.47144 11.8869 6.92582 11.8869 7.6842C11.8869 18.1842 18.8869 19.5813 16.8869 20.1846Z"/></svg>';
+
+    const $ = id => document.getElementById(id);
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const track = (name, params) => {
+      try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {}
+      try { if (window.clarity) clarity('event', name); } catch (e) {}
+      try {
+        if (window.fbq) {
+          const map = { order_chat_cta_shown: 'ViewContent', order_chat_store_click: 'Lead' };
+          if (map[name]) fbq('track', map[name], { content_name: 'order_chat' });
+          if (name === 'order_chat_reply' && params && params.step === 1) fbq('trackCustom', 'ChatStarted');
+          if (name === 'order_chat_store_click') fbq('trackCustom', 'AppStoreClick', params || {});
+        }
+      } catch (e) {}
+    };
+    const tag = (key, value) => { try { if (window.clarity) clarity('set', key, String(value).slice(0, 80)); } catch (e) {} };
+    const fmt = x => x.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const esc = x => x.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    let step = 0, chain = DATA.other, busy = false;
+
+    function scrollDown() { const b = $('body'); b.scrollTo({ top: b.scrollHeight, behavior: 'smooth' }); }
+    function put(el, who) {
+      const th = $('thread');
+      const prev = th.lastElementChild;
+      if (prev && prev.classList.contains('delivered')) prev.remove();
+      const last = th.lastElementChild;
+      if (last && last.classList.contains(who)) last.classList.remove('tailed');
+      el.classList.add('tailed'); th.appendChild(el); scrollDown();
+    }
+    async function botSays(text) {
+      const th = $('thread');
+      const d = document.createElement('div');
+      d.className = 'b bot dots'; d.innerHTML = '<i></i><i></i><i></i>';
+      const last = th.lastElementChild;
+      if (last && last.classList.contains('bot')) d.style.marginTop = '2px';
+      th.appendChild(d); scrollDown();
+      await wait(Math.min(700 + text.length * 10, 1500));
+      d.remove();
+      const b = document.createElement('div');
+      b.className = 'b bot'; b.innerHTML = text.split('\n').map(t => '<p>' + fmt(t) + '</p>').join('') + TAIL;
+      put(b, 'bot');
+      await wait(450);
+    }
+    function userBubble(text) {
+      const d = document.createElement('div');
+      d.className = 'b me'; d.textContent = text; d.insertAdjacentHTML('beforeend', TAIL);
+      put(d, 'me');
+      const dl = document.createElement('div'); dl.className = 'delivered'; dl.textContent = 'Delivered';
+      $('thread').appendChild(dl);
+    }
+    function showCard() {
+      const th = $('thread');
+      const last = th.lastElementChild; if (last) last.classList.remove('tailed');
+      const a = document.createElement('a');
+      a.className = 'card'; a.href = isAndroid ? ANDROID : IOS;
+      a.innerHTML = '<div class="img">hungrX</div><div class="meta"><div class="t">hungrX: Know before you order</div><div class="d">' + (isAndroid ? 'play.google.com' : 'apps.apple.com') + '</div></div>';
+      a.addEventListener('click', () => track('order_chat_store_click', { store: isAndroid ? 'google_play' : 'app_store' }));
+      th.appendChild(a); scrollDown();
+      track('order_chat_cta_shown');
+      ['back', 'contact'].forEach(id => { const el = $(id); el.removeAttribute('aria-disabled'); el.addEventListener('click', () => track('order_chat_back_home', { via: id })); });
+    }
+    /* ---------- GUARD: scores every answer so trolls can't break the chat ---------- */
+    const CHAINS = /mc ?d|mcdonald|mickey|kfc|chick ?fil|chikfil|chipot|subway|taco ?bell|burger ?king|\bbk\b|wend[yi]|panera|starbuck|sbux|olive ?garden|shake ?shack|baskin|panda|five ?guys|popeye|domino|pizza ?hut|dunkin|sonic|jack in the box|arby|in ?n ?out|in-n-out|whataburger|cava|sweetgreen|red ?lobster|applebee|chili'?s|cheesecake|buffalo wild|bww|wingstop|dairy queen|\bdq\b|jersey mike|jimmy john|culver|raising cane|canes|qdoba|noodles|zaxby|bojangle|white castle|del taco|el pollo|denny|ihop|waffle house|texas roadhouse|outback|p\.?f\.? chang/i;
+    const FOOD = /burger|fries|fry|chicken|nugget|wing|tender|sandwich|sub|wrap|bowl|burrito|taco|quesadilla|salad|pizza|pasta|alfredo|steak|rice|beans|shake|coffee|latte|frap|mocha|tea|soda|coke|sprite|drink|combo|meal|breakfast|muffin|bagel|croissant|donut|cookie|dessert|ice ?cream|fish|shrimp|sushi|ramen|noodle|curry|biryani|dosa|kebab|gyro|hot ?dog|bacon|egg|pancake|waffle|soup|bread|stick|side|big ?mac|whopper|baconator|mcchicken|nachos|smoothie|juice|water|large|medium|small|venti|grande|tall/i;
+    const GREET = /^(hi+|hey+|hello+|yo+|sup|hii+|heyy+|hola|wassup|what'?s up|good (morning|evening|night))[\s!.?]*$/i;
+    const UNSURE = /^(idk|i don'?t know|dunno|nothing|none|no idea|not sure|nah|no|nope|n\/a|whatever|anything|depends|everything)[\s!.?]*$/i;
+    const FILLER = /^(lol+|lmao+|haha+|hah|hehe+|ok+|okay|k+|kk|yes|yeah|yep|sure|cool|nice|hmm+|wow|bruh|bro|what|why|huh|test|testing|\?+|\.+)[\s!.?😂🤣😅😄🙂👍]*$/i;
+    const PLACEWORD = /diner|grill|cafe|café|restaurant|kitchen|bistro|bar\b|pub\b|deli|bakery|bbq|barbecue|steakhouse|pizzeria|taqueria|food ?truck|buffet|chinese|thai|mexican|indian|italian|japanese|korean|greek|vietnamese|halal|sushi|ramen|pho|wings|hot ?pot|local|spot|place|joint|truck|drive.?thru|takeout|delivery|doordash|uber ?eats|grubhub|home|cook|campus|cafeteria|work/i;
+    const BOT_Q = /are you (a )?(bot|ai|robot|real|human)|is this (a )?(bot|ai)|who are you|who made you|chatgpt|gpt/i;
+    const MINOR = /i'?m 1[0-7]\b|i am 1[0-7]\b|1[0-7] ?(yo|years? old)|middle school|high school|my mom won'?t/i;
+    const SAFETY = /anorexi|bulimi|purg(e|ing)|starv(e|ing) myself|eating disorder|\bed recovery|binge|throw(ing)? up after|make myself (sick|throw)|self.?harm|suicid/i;
+    const OFFTOPIC = /\b(weather|bitcoin|crypto|poem|code|homework|politic|president|joke|song|movie|essay|translate|math)\b|ignore (all|previous|your)|system prompt|instructions/i;
+
+    /* ---------- ABUSE LIBRARY: add new words to the lists below, nothing else needs changing ---------- */
+    const ABUSE_WORDS = `
+      fuck fucks fucked fucker fuckers fucking fuckin fuckn fucky fuckface fuckhead fuckboy fuckwit fuk fuks fuking fukin fuker fck fcking fcker fkn fking fk fking fux fuq fuc fucc phuck phuk fvck fcuk effing feck
+      shit shits shitty shitting shithead shithole shitface bullshit horseshit dipshit shite shyt sht
+      bitch bitches bitchy bitchass biatch biotch bish beotch
+      ass asses asshole assholes arse arsehole asshat asswipe assclown jackass dumbass smartass fatass badass kickass
+      dick dicks dickhead dickface dickwad dik dikk dck
+      cock cocks cocksucker cok kok cawk
+      cunt cunts kunt
+      pussy pussies pussi puss
+      bastard bastards
+      slut sluts slutty whore whores hoe hoes thot skank tramp
+      penis penises vagina vaginas vag boob boobs boobies booba tits titties titty tity tittys tiddies tiddy tit nipple nipples
+      porn porno pornhub xvideos xxx onlyfans nude nudes naked horny sexy sex sexting sexual
+      cum cumming cumshot jizz semen sperm orgasm erection boner
+      blowjob blowjobs bj handjob rimjob anal anus butthole butt butts booty buttocks
+      dildo vibrator wank wanker wanking jerkoff masturbate masturbating fap fapping
+      milf dilf gilf hentai rule34 nsfw bdsm kinky fetish
+      rape rapist raping molest pedo pedophile paedo
+      retard retarded retards tard spaz spastic
+      nigger niggers nigga niggas nigg niger negro coon coons spic spics wetback chink chinks gook gooks kike kikes paki pakis raghead towelhead beaner beaners cracker honky
+      fag fags faggot faggots fagot dyke dykes tranny trannies shemale
+      motherfucker motherfuckers mofo mf mfer
+      stfu gtfo kys kms lmfao
+      twat twats prick pricks wanker bollocks bugger knob knobhead tosser
+      douche douchebag douchebags scumbag dumbfuck
+      deez nutz ligma sugma sawcon bofa
+      idiot idiots stupid moron morons loser losers dumb dumbo
+      die dead killyourself
+    `.trim().split(/\s+/);
+    const ABUSE_PHRASES = [
+      'suck my', 'suck it', 'suck me', 'suk my', 'suke my', 'sukk my', 'suc my', 'sck my', 'sukc my', 'sucka my', 'suk it', 'suck on', 'sucks my', 'eat my', 'eat me', 'eat ass', 'lick my', 'lick me', 'sit on my', 'sit on me',
+      'blow me', 'kiss my', 'bite me', 'screw you', 'screw off', 'piss off', 'pissed off', 'go to hell', 'go die', 'kill yourself',
+      'kill your self', 'shut up', 'shut the', 'up yours', 'your mom', 'ur mom', 'yo mama', 'your mama', 'deez nuts', 'my nuts',
+      'my balls', 'my d', 'step sis', 'step bro', 'step mom', 'daddy', 'son of a', 'piece of shit', 'go away', 'f off', 'f you', 'fk you'
+    ];
+    const ABUSE_SAFE = /dick'?s drive|dick'?s sporting|scunthorpe|cocktail|assorted|bass pro|peacock|hancock|shiitake|cockburn|cockles|titanic|butterfinger|buttercream|buttermilk|sussex|essex|middlesex/gi;
+    const ABUSE_ROOTS = ['fuck', 'fuk', 'cunt', 'nigg', 'motherf', 'bitch', 'faggot', 'cocksuck', 'blowjob', 'dickhead', 'asshole', 'pussy', 'whore', 'shithead', 'bullshit'];
+
+    const LEET = { '0': 'o', '1': 'i', '!': 'i', '|': 'i', '3': 'e', '4': 'a', '@': 'a', '5': 's', '$': 's', '7': 't', '+': 't', '8': 'b', '9': 'g', '*': 'u', '€': 'e' };
+    const once = w => w.replace(/(.)\1+/g, '$1');                       // fuuuck -> fuck
+    const ABUSE_SET = new Set(ABUSE_WORDS);
+    const ABUSE_SET_ONCE = new Set(ABUSE_WORDS.filter(w => w.length >= 4).map(once));
+
+    function isAbuse(raw) {
+      const t = raw.toLowerCase().replace(ABUSE_SAFE, ' ').replace(/[0-9!|@$+*€]/g, c => LEET[c] || c);
+      const words = t.split(/[^a-z]+/).filter(Boolean);
+      for (const w of words) {
+        if (ABUSE_SET.has(w)) return true;
+        if (w.length >= 4 && ABUSE_SET_ONCE.has(once(w))) return true;
+      }
+      const spaced = ' ' + words.join(' ') + ' ';
+      for (const p of ABUSE_PHRASES) if (spaced.includes(' ' + p + ' ') || spaced.includes(' ' + p)) {
+        // allow food after "eat my": "eat my fries"
+        if (/^(eat my|eat me)$/.test(p) && FOOD.test(spaced.split(p)[1] || '')) continue;
+        return true;
+      }
+      const letters = once(words.join(''));                               // f.u.c.k / f u c k / fuckface
+      for (const r of ABUSE_ROOTS) if (letters.includes(once(r))) return true;
+      return false;
+    }
+
+    function gibberish(t) {
+      const letters = t.replace(/[^a-z]/gi, '');
+      if (!letters.length) return true;                                   // only emoji / numbers / symbols
+      if (/(.)\1{3,}/i.test(t)) return true;                              // aaaaa
+      if (/[bcdfghjklmnpqrstvwxz]{6,}/i.test(letters)) return true;       // asdfghjk
+      if (letters.length >= 4 && !/[aeiouy]/i.test(letters)) return true; // no vowels
+      return false;
+    }
+    // returns { ok:true } or { ok:false, why }
+    function judge(t, step) {
+      const x = t.trim();
+      if (SAFETY.test(x)) return { ok: false, why: 'safety' };
+      if (MINOR.test(x)) return { ok: false, why: 'minor' };
+      if (isAbuse(x)) return { ok: false, why: 'abuse' };
+      if (BOT_Q.test(x)) return { ok: false, why: 'bot' };
+      if (OFFTOPIC.test(x)) return { ok: false, why: 'offtopic' };
+      if (GREET.test(x)) return { ok: false, why: 'greet' };
+      if (UNSURE.test(x)) return { ok: false, why: 'unsure' };
+      if (FILLER.test(x)) return { ok: false, why: 'unclear' };
+      if (gibberish(x)) return { ok: false, why: 'gibberish' };
+      let score = 0;
+      if (CHAINS.test(x)) score += 3;
+      if (FOOD.test(x)) score += 2;
+      const words = x.split(/\s+/).length;
+      if (step === 1) { if (PLACEWORD.test(x)) score += 2; if (words > 6) score -= 1; if (/\?$/.test(x)) score -= 2; }
+      if (/\b(you|your|u|ur|my|me|i|im|i'm)\b/i.test(x) && !CHAINS.test(x) && !FOOD.test(x) && !PLACEWORD.test(x)) score -= 2;
+      if (step === 2) { if (words <= 25) score += 1; if (/\?$/.test(x) && !FOOD.test(x)) score -= 2; }
+      return score >= 2 ? { ok: true } : { ok: false, why: 'unclear' };
+    }
+    const REASK = {
+      1: { greet: 'hey hey 😄 where do you end up eating out the most?', unsure: 'haha fair. where did you last grab food from?', gibberish: "lol didn't catch that 😅 where do you eat out the most?", unclear: "hmm which spot is that? 😅 like mcdonald's, chipotle, or a local place", bot: "haha i'm hungrX's assistant 🙂 so where do you eat out the most?", offtopic: 'haha i only do food 😄 where do you eat out the most?', abuse: "sorry, didn't catch that. where do you end up eating out the most?" },
+      2: { greet: 'haha hey 😄 so what do you usually order there?', unsure: "no stress. what's the last thing you got there?", gibberish: "lol didn't catch that 😅 what do you usually order?", unclear: 'hmm what do you usually order there? the whole thing', bot: "haha i'm hungrX's assistant 🙂 so what do you usually get there?", offtopic: 'haha i only do food 😄 what do you usually get there?', abuse: 'sorry, didn\'t catch that. ' + 'ASK2' }
+    };
+    let strikes = 0, abuses = 0;
+    function detectChain(t) {
+      t = t.toLowerCase();
+      for (const k of ['olive', 'mcdonalds', 'chipotle', 'starbucks']) if (DATA[k].re.test(t)) return DATA[k];
+      return DATA.other;
+    }
+    function visitsPerMonth(t) {
+      t = t.toLowerCase();
+      if (/every ?day|daily|everyday/.test(t)) return 30;
+      if (/(2|two|twice|3|three|few).*(week|wk)|twice/.test(t)) return 8;
+      if (/month|rare|rarely|sometimes|not really|nah|no\b|occasion/.test(t)) return 0;
+      return 4;
+    }
+    const n = x => x.toLocaleString('en-US');
+    function lock(on) { busy = on; $('input').disabled = on; }
+
+    async function askAI(order) {
+      // typing bubble stays up while we wait
+      const th = $('thread');
+      const d = document.createElement('div');
+      d.className = 'b bot dots'; d.innerHTML = '<i></i><i></i><i></i>';
+      th.appendChild(d); scrollDown();
+      let res = null;
+      if (AI_ENDPOINT) {
+        try {
+          const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 28000);
+          const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order }), signal: ctrl.signal });
+          clearTimeout(t);
+          res = await r.json();
+        } catch (e) { res = null; }
+      } else {
+        await wait(1600);  // preview: example numbers
+        let c = chain;
+        if (c.vague && !/large|small|medium|venti|grande|tall/i.test(order)) c = Object.assign({}, c, c.vague);
+        res = { ok: true, estimate: c === DATA.other, item: c.item, assumed: c.note || '', cal: c.cal, p: c.p, c: c.c, f: c.f, swap: c.swap, swapCal: c.swapCal, keep: c.keep };
+      }
+      d.remove();
+      return res;
+    }
+
+    function endChat(note) {
+      lock(true); busy = true;
+      $('input').placeholder = note || 'Message';
+      $('field').classList.remove('has');
+    }
+
+    async function softClose() {
+      track('order_chat_soft_close', { step: step + 1 });
+      await botSays("no worries 😅 let's personalize it to you, so you see what fits your calories at restaurants near you. takes 40 sec 👇");
+      await wait(300); showCard(); endChat();
+    }
+
+    async function send(text) {
+      text = (text || '').trim().slice(0, 80);
+      if (!text || busy) return;
+      $('input').value = ''; $('field').classList.remove('has');
+      userBubble(text); lock(true);
+      const now = step + 1;
+      const v = judge(text, now);
+
+      if (!v.ok) {
+        track('order_chat_rejected', { step: now, why: v.why });
+        tag('rejected_' + now, v.why + ': ' + text);
+        if (v.why === 'safety') {
+          await botSays("hey, thanks for telling me that. this chat isn't the right place for it, but please talk to someone you trust or a professional 💛");
+          endChat(); return;
+        }
+        if (v.why === 'minor') {
+          await botSays("ahh this one's made for adults, so i'll leave it here. take care 💛");
+          endChat(); return;
+        }
+        if (v.why === 'abuse' && ++abuses >= 2) { endChat(); return; }
+        if (v.why !== 'bot') strikes++;
+        if (strikes >= 2) { await softClose(); return; }
+        await botSays((REASK[now][v.why] || REASK[now].unclear).replace('ASK2', chain.ask));
+        lock(false); return;
+      }
+
+      step = now;
+      track('order_chat_reply', { step });
+      tag(step === 1 ? 'chat_place' : 'chat_order', text);
+      if (step === 1) {
+        strikes = 0;
+        chain = detectChain(text); place = text;
+        await botSays(chain.react);
+        await botSays(chain.ask);
+      } else if (step === 2) {
+        const res = await askAI(text);
+        if (res && !res.ok && res.reason === 'not_food') {
+          step = 1; strikes++;
+          track('order_chat_rejected', { step: 2, why: 'ai_not_food' }); tag('rejected_2', 'ai_not_food: ' + text);
+          if (strikes >= 2) { await softClose(); return; }
+          await botSays("hmm i don't think that's on their menu 😅 " + chain.ask);
+          lock(false); return;
+        }
+        if (res && res.ok) {
+          const t = res.estimate ? '~' : '';
+          tag('chat_cal', res.cal); tag('chat_swap', res.swap);
+          await botSays(res.item + (res.assumed ? ' (' + res.assumed + ')' : '') + ' = **' + t + n(res.cal) + ' cal**\n' + res.p + 'g protein · ' + res.c + 'g carbs · ' + res.f + 'g fat');
+          await botSays('easy swap: ' + res.swap + ' → **' + t + n(res.swapCal) + ' cal**. ' + res.keep + ', **' + n(res.cal - res.swapCal) + ' cal cut** 😳');
+          track('order_chat_reveal', { ok: true });
+        } else {
+          await botSays("couldn't pull the exact numbers for that one 😅 the app has the full menu with every calorie");
+          track('order_chat_reveal', { ok: false, reason: (res && res.reason) || 'error' });
+        }
+        await botSays("now let's personalize it to you, so you see what fits your calories at restaurants near you. takes 40 sec 👇");
+        await wait(300); showCard(); endChat();
+        return;
+      }
+      lock(false);
+    }
+
+    $('send').addEventListener('click', () => { send($('input').value); $('input').focus(); });
+    $('input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); send($('input').value); } });
+    $('input').addEventListener('input', e => $('field').classList.toggle('has', e.target.value.trim().length > 0));
+
+    (async function start() {
+      lock(true);
+      track('order_chat_open');
+      await wait(500);
+      await botSays('hey! quick one, where do you end up eating out the most?');
+      lock(false);
+    })();
+  </script>
+</body>
+</html>

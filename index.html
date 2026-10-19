@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>hungrX — Eat What You Love. Stay On Track.</title>
   <meta name="description"
-    content="Struggling to lose weight while eating out? hungrX finds nearby restaurants, shows real menu calories, and tracks your macros automatically. Free app." />
+    content="Struggling to lose weight while eating out? hungrX finds nearby restaurants, shows real menu calories, and tracks your macros automatically." />
   <link rel="canonical" href="https://hungrx.com/" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDB0C3KP9S"></script>
   <script>
@@ -434,6 +434,19 @@
       font-size: 12.5px;
       color: rgba(255, 255, 255, 0.4);
       font-weight: 500;
+    }
+
+    @media (min-width:441px) and (max-width:819px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      footer {
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        padding-left: calc(50vw - 200px);
+        padding-right: calc(50vw - 200px);
+      }
     }
 
     @media (max-width:360px) {
@@ -948,6 +961,21 @@
       }
     }
   </style>
+  <!-- Meta Pixel (hungrX Web) -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2331393997705409');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt=""
+    src="https://www.facebook.com/tr?id=2331393997705409&ev=PageView&noscript=1" /></noscript>
 </head>
 
 <body>
@@ -990,9 +1018,9 @@
                   stroke-linejoin="round">
                   <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
                 </svg>
-                Get the free app
+                Get the app
               </button>
-              <div class="fine">Free on iOS and Android</div>
+              <div class="fine">On iOS and Android</div>
             </div>
           </div>
         </div>
@@ -1076,14 +1104,14 @@
           stroke-linejoin="round">
           <path d="M20 6L9 17l-5-5" />
         </svg>
-        Try for free
+        Real menu calories
       </span>
       <span class="sheet-point">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
           stroke-linejoin="round">
           <path d="M20 6L9 17l-5-5" />
         </svg>
-        No commitment. Cancel anytime
+        Macros tracked for you
       </span>
     </div>
     <div class="sheet-btns">
@@ -1094,7 +1122,6 @@
         </svg>
         <span class="stn-text"><span class="stn-sub">Download on the</span><span class="stn-name">App
             Store</span></span>
-        <span class="stn-free">Free</span>
       </a>
       <a href="https://play.google.com/store/apps/details?id=com.hungrx.app" class="stn android">
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
@@ -1102,7 +1129,6 @@
             d="M3.18 23.76c.3.17.65.19.97.07L13.86 12 3.04.17C2.95.2 2.87.24 2.8.29 2.3.6 2 1.14 2 1.74v20.52c0 .6.3 1.14.8 1.45.13.08.25.05.38.05zm14.82-12l-2.96-2.96L3 .56l12.5 6.6 2.5-1.36zm.5 1.1l-2.83 2.83L14 14l1.5.79L18 16.14c.5.27 1.05.25 1.52-.04.48-.29.76-.8.76-1.38 0-.56-.28-1.07-.78-1.36zm-2.97 3.9L3 23.44l12.05-7.25 1.48 3.57z" />
         </svg>
         <span class="stn-text"><span class="stn-sub">Get it on</span><span class="stn-name">Google Play</span></span>
-        <span class="stn-free">Free</span>
       </a>
     </div>
     <p class="sheet-beta">Early access. Your feedback shapes it.</p>

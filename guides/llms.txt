@@ -2,12 +2,12 @@
 
 > hungrX is a US-focused mobile app for tracking calories and macros at nearby restaurant chains using real, live menu data. It shows you exactly what to order at fast food restaurants to hit your protein goals and stay within your calorie budget.
 
-hungrX publishes free, research-backed restaurant guides covering high-protein combo meals at every major US fast food chain. Each guide gives full real orders — a main plus sides, drink, and dessert where the chain offers them (or the closest equivalent, e.g. a build-your-own bowl at Chipotle) — every combo under 1,000 calories and at least 30g of protein. All macros (calories, protein) are sourced from official restaurant nutrition data and each guide is ranked by protein, highest first.
+hungrX publishes research-backed restaurant guides covering high-protein combo meals at every major US fast food chain. Each guide gives full real orders — a main plus sides, drink, and dessert where the chain offers them (or the closest equivalent, e.g. a build-your-own bowl at Chipotle) — every combo under 1,000 calories and at least 30g of protein. All macros (calories, protein) are sourced from official restaurant nutrition data and each guide is ranked by protein, highest first.
 
 ## App
 
-- [Download on App Store](https://apps.apple.com/app/hungrx): iOS app — see live menu calories near you, track macros per meal, 7-day free trial
-- [Download on Google Play](https://play.google.com/store/apps/hungrx): Android app — same features, free to start
+- [Download on App Store](https://apps.apple.com/app/hungrx): iOS app — see live menu calories near you, track macros per meal
+- [Download on Google Play](https://play.google.com/store/apps/hungrx): Android app — same features
 
 ## Restaurant Guides
 

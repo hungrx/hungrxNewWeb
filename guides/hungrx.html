@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>hungrX — Eat What You Love. Stay On Track.</title>
-  <meta name="description" content="Struggling to lose weight while eating out? hungrX finds nearby restaurants, shows real menu calories, and tracks your macros automatically. Free app."/>
+  <meta name="description" content="Struggling to lose weight while eating out? hungrX finds nearby restaurants, shows real menu calories, and tracks your macros automatically."/>
   <link rel="canonical" href="https://hungrx.com/"/>
   <link rel="icon" type="image/png" href="../logo2.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,6 +171,36 @@
       .panel-title{font-size:clamp(1.85rem,8vw,2.2rem)}
     }
   </style>
+  <!-- Google Analytics + Microsoft Clarity -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDB0C3KP9S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QDB0C3KP9S');
+  </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w4yyk6te55");
+  </script>
+  <!-- Meta Pixel (hungrX Web) -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2331393997705409');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt=""
+    src="https://www.facebook.com/tr?id=2331393997705409&ev=PageView&noscript=1" /></noscript>
 </head>
 <body>
 
@@ -264,23 +294,21 @@
   <div class="sheet-points">
     <span class="sheet-point">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      Try for free
+      Real menu calories
     </span>
     <span class="sheet-point">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      No commitment. Cancel anytime
+      Macros tracked for you
     </span>
   </div>
   <div class="sheet-btns">
     <a href="https://apps.apple.com/us/app/meal-tracker-by-hungrx/id6763730809" class="stn ios">
       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       <span class="stn-text"><span class="stn-sub">Download on the</span><span class="stn-name">App Store</span></span>
-      <span class="stn-free">Free</span>
     </a>
     <a href="https://play.google.com/store/apps/details?id=com.hungrx.app" class="stn android">
       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M3.18 23.76c.3.17.65.19.97.07L13.86 12 3.04.17C2.95.2 2.87.24 2.8.29 2.3.6 2 1.14 2 1.74v20.52c0 .6.3 1.14.8 1.45.13.08.25.05.38.05zm14.82-12l-2.96-2.96L3 .56l12.5 6.6 2.5-1.36zm.5 1.1l-2.83 2.83L14 14l1.5.79L18 16.14c.5.27 1.05.25 1.52-.04.48-.29.76-.8.76-1.38 0-.56-.28-1.07-.78-1.36zm-2.97 3.9L3 23.44l12.05-7.25 1.48 3.57z"/></svg>
       <span class="stn-text"><span class="stn-sub">Get it on</span><span class="stn-name">Google Play</span></span>
-      <span class="stn-free">Free</span>
     </a>
   </div>
   <p class="sheet-beta">Early access. Your feedback shapes it.</p>
