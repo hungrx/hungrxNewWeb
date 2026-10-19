@@ -114,11 +114,18 @@ export default async function handler(req, res) {
       signal: ctrl.signal
     });
     clearTimeout(timer);
-    if (!r.ok) return res.status(200).json({ ok: false, reason: 'no_data' });
+    if (!r.ok) {
+      const errText = (await r.text()).slice(0, 300);
+      console.error('gemini_error', r.status, errText);
+      return res.status(200).json({ ok: false, reason: 'no_data', debug: 'gemini_' + r.status + ': ' + errText.replace(/AIza[\w-]+|AQ\.[\w-]+/g, '[key]') });
+    }
     const data = await r.json();
     const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
-    return res.status(200).json(validate(parse(text)));
-  } catch {
-    return res.status(200).json({ ok: false, reason: 'no_data' });
+    const out = validate(parse(text));
+    if (!out.ok && out.reason === 'no_data') out.debug = 'model: ' + (data.candidates?.[0]?.finishReason || '') + ' ' + text.slice(0, 300);
+    return res.status(200).json(out);
+  } catch (e) {
+    console.error('handler_error', e && e.message);
+    return res.status(200).json({ ok: false, reason: 'no_data', debug: 'exception: ' + String(e && e.message).slice(0, 200) });
   }
 }
