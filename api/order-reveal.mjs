@@ -3,7 +3,7 @@
 
 export const config = { maxDuration: 30 };
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 const ALLOWED_ORIGINS = ['https://hungrx.com', 'https://www.hungrx.com'];
 const HITS = new Map(); // best-effort per-IP limit (resets when the function cold-starts)
 const LIMIT_PER_HOUR = 6;
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     systemInstruction: { parts: [{ text: SYSTEM }] },
     contents: [{ role: 'user', parts: [{ text: `Restaurant: ${place}\nUsual order: ${order}` }] }],
     tools: [{ google_search: {} }],
-    generationConfig: { temperature: 0.2, maxOutputTokens: 1200, thinkingConfig: { thinkingBudget: 512 } }
+    generationConfig: { temperature: 0.2, maxOutputTokens: 2048, thinkingConfig: { thinkingLevel: 'low' } }
   };
 
   try {
