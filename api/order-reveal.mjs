@@ -92,7 +92,7 @@ export default async function handler(req, res) {
   // Run both at once and use the first GOOD answer:
   //  - fast: the model's own menu knowledge (usually 2-5 s)
   //  - searched: checked against the web with Google Search (more exact, sometimes slow)
-  // We give the searched answer a short head start window; if it isn't back, the fast one is used.
+  // The searched answer is preferred; the fast one is only a backup if search fails or is too slow.
   const ask = (payload, ms, tag) => gemini(MODEL, payload, ms).then(t => {
     const v = t == null ? { ok: false, reason: 'no_data' } : validate(parse(t));
     if (!v.ok && v.reason !== 'not_food') console.error('reveal_failed', tag, t == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t || '').slice(0, 400));
@@ -102,12 +102,12 @@ export default async function handler(req, res) {
   const fast = ask(base, 15000, 'fast');
   const good = v => v && (v.ok || v.reason === 'not_food');
 
-  // 1) searched answer if it comes back within 6 s
-  const early = await Promise.race([searched, new Promise(r => setTimeout(() => r(null), 6000))]);
+  // 1) PREFER the searched answer: wait up to 15 s for it
+  const early = await Promise.race([searched, new Promise(r => setTimeout(() => r(null), 15000))]);
   if (good(early)) return res.status(200).json(early);
-  // 2) otherwise the fast answer
+  // 2) backup only: the fast answer, shown with "~" because it is not checked against the web
   const f = await fast;
-  if (good(f)) return res.status(200).json(f);
+  if (good(f)) return res.status(200).json(f.ok ? { ...f, estimate: true } : f);
   // 3) last chance: wait for the searched one to finish
   const s2 = await searched;
   return res.status(200).json(good(s2) ? s2 : { ok: false, reason: 'no_data' });
