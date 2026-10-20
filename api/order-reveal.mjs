@@ -3,7 +3,7 @@
 
 import { gate, clean, gemini, checkSession } from './_guard.mjs';
 
-export const config = { maxDuration: 30 };
+export const config = { maxDuration: 45 };
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 
@@ -83,11 +83,21 @@ export default async function handler(req, res) {
   const place = clean(body.place), order = clean(body.order);
   if (!place || !order) return res.status(400).json({ ok: false, reason: 'input' });
 
-  const text = await gemini(MODEL, {
+  const base = {
     systemInstruction: { parts: [{ text: SYSTEM }] },
     contents: [{ role: 'user', parts: [{ text: `Restaurant: ${place}\nUsual order: ${order}` }] }],
-    tools: [{ google_search: {} }],
     generationConfig: { temperature: 0.2, maxOutputTokens: 2048, thinkingConfig: { thinkingLevel: 'low' } }
-  }, 25000);
-  return res.status(200).json(text == null ? { ok: false, reason: 'no_data' } : validate(parse(text)));
+  };
+
+  // Try 1: with Google Search (most accurate).
+  const t1 = await gemini(MODEL, { ...base, tools: [{ google_search: {} }] }, 18000);
+  let v = t1 == null ? null : validate(parse(t1));
+  if (v && (v.ok || v.reason === 'not_food')) return res.status(200).json(v);
+  console.error('reveal_try1_failed', t1 == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t1 || '').slice(0, 400));
+
+  // Try 2: same question without search (faster, uses the model's own menu knowledge).
+  const t2 = await gemini(MODEL, base, 15000);
+  v = t2 == null ? { ok: false, reason: 'no_data' } : validate(parse(t2));
+  if (!v.ok) console.error('reveal_try2_failed', t2 == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t2 || '').slice(0, 400));
+  return res.status(200).json(v);
 }

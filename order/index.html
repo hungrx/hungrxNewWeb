@@ -434,7 +434,7 @@
       let res = null;
       if (AI_ENDPOINT) {
         try {
-          const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 28000);
+          const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 40000);
           const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order, session }), signal: ctrl.signal });
           clearTimeout(t);
           res = await r.json();
