@@ -268,6 +268,7 @@
       if (last && last.classList.contains(who)) last.classList.remove('tailed');
       el.classList.add('tailed'); th.appendChild(el); scrollDown();
     }
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
     async function botSays(text) {
       const th = $('thread');
       const d = document.createElement('div');
@@ -426,26 +427,43 @@
     function lock(on) { busy = on; $('input').disabled = on; }
 
     async function askAI(order) {
-      // typing bubble stays up while we wait
-      const th = $('thread');
-      const d = document.createElement('div');
-      d.className = 'b bot dots'; d.innerHTML = '<i></i><i></i><i></i>';
-      th.appendChild(d); scrollDown();
-      let res = null;
+      // 1) start the request FIRST so no time is lost on the chat animation
+      let job;
       if (AI_ENDPOINT) {
-        try {
-          const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 40000);
-          const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order, session }), signal: ctrl.signal });
-          clearTimeout(t);
-          res = await r.json();
-        } catch (e) { res = null; }
+        job = (async () => {
+          try {
+            const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 40000);
+            const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ place, order, session }), signal: ctrl.signal });
+            clearTimeout(t);
+            return await r.json();
+          } catch (e) { return null; }
+        })();
       } else {
-        await wait(1600);  // preview: example numbers
-        let c = chain;
-        if (c.vague && !/large|small|medium|venti|grande|tall/i.test(order)) c = Object.assign({}, c, c.vague);
-        res = { ok: true, estimate: c === DATA.other, item: c.item, assumed: c.note || '', cal: c.cal, p: c.p, c: c.c, f: c.f, swap: c.swap, swapCal: c.swapCal, keep: c.keep };
+        job = (async () => {
+          await wait(1600);  // preview: example numbers
+          let c = chain;
+          if (c.vague && !/large|small|medium|venti|grande|tall/i.test(order)) c = Object.assign({}, c, c.vague);
+          return { ok: true, estimate: c === DATA.other, item: c.item, assumed: c.note || '', cal: c.cal, p: c.p, c: c.c, f: c.f, swap: c.swap, swapCal: c.swapCal, keep: c.keep };
+        })();
       }
-      d.remove();
+      let done = false; job.then(() => { done = true; });
+
+      // 2) instant reply so it never feels dead
+      await botSays(pick(['ooh good one, checking the menu 👀 one sec', 'got it, pulling up the menu 👀 one sec', 'nice, checking the exact numbers 👀 one sec']));
+
+      // 3) typing dots while we wait, plus a nudge if it's slow
+      const th = $('thread');
+      let d = null;
+      const dots = () => { d = document.createElement('div'); d.className = 'b bot dots'; d.style.marginTop = '2px'; d.innerHTML = '<i></i><i></i><i></i>'; th.appendChild(d); scrollDown(); };
+      if (!done) dots();
+      const slow = await Promise.race([job.then(() => false), wait(7000).then(() => true)]);
+      if (slow && !done) {
+        if (d) d.remove();
+        await botSays('almost there, matching it to their nutrition chart');
+        if (!done) dots();
+      }
+      const res = await job;
+      if (d) d.remove();
       return res;
     }
 

@@ -3,7 +3,7 @@
 
 import { gate, clean, gemini, checkSession } from './_guard.mjs';
 
-export const config = { maxDuration: 45 };
+export const config = { maxDuration: 30 };
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 
@@ -89,15 +89,26 @@ export default async function handler(req, res) {
     generationConfig: { temperature: 0.2, maxOutputTokens: 2048, thinkingConfig: { thinkingLevel: 'low' } }
   };
 
-  // Try 1: with Google Search (most accurate).
-  const t1 = await gemini(MODEL, { ...base, tools: [{ google_search: {} }] }, 18000);
-  let v = t1 == null ? null : validate(parse(t1));
-  if (v && (v.ok || v.reason === 'not_food')) return res.status(200).json(v);
-  console.error('reveal_try1_failed', t1 == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t1 || '').slice(0, 400));
+  // Run both at once and use the first GOOD answer:
+  //  - fast: the model's own menu knowledge (usually 2-5 s)
+  //  - searched: checked against the web with Google Search (more exact, sometimes slow)
+  // We give the searched answer a short head start window; if it isn't back, the fast one is used.
+  const ask = (payload, ms, tag) => gemini(MODEL, payload, ms).then(t => {
+    const v = t == null ? { ok: false, reason: 'no_data' } : validate(parse(t));
+    if (!v.ok && v.reason !== 'not_food') console.error('reveal_failed', tag, t == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t || '').slice(0, 400));
+    return v;
+  });
+  const searched = ask({ ...base, tools: [{ google_search: {} }] }, 20000, 'searched');
+  const fast = ask(base, 15000, 'fast');
+  const good = v => v && (v.ok || v.reason === 'not_food');
 
-  // Try 2: same question without search (faster, uses the model's own menu knowledge).
-  const t2 = await gemini(MODEL, base, 15000);
-  v = t2 == null ? { ok: false, reason: 'no_data' } : validate(parse(t2));
-  if (!v.ok) console.error('reveal_try2_failed', t2 == null ? 'api_or_timeout' : 'invalid_answer', JSON.stringify({ place, order }), String(t2 || '').slice(0, 400));
-  return res.status(200).json(v);
+  // 1) searched answer if it comes back within 6 s
+  const early = await Promise.race([searched, new Promise(r => setTimeout(() => r(null), 6000))]);
+  if (good(early)) return res.status(200).json(early);
+  // 2) otherwise the fast answer
+  const f = await fast;
+  if (good(f)) return res.status(200).json(f);
+  // 3) last chance: wait for the searched one to finish
+  const s2 = await searched;
+  return res.status(200).json(good(s2) ? s2 : { ok: false, reason: 'no_data' });
 }
